@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Capa_1" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 70 70">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #00ace7;
+      }
+
+      .cls-1, .cls-2, .cls-3, .cls-4, .cls-5, .cls-6 {
+        stroke-width: 0px;
+      }
+
+      .cls-2 {
+        fill: url(#Degradado_sin_nombre_4);
+      }
+
+      .cls-3 {
+        fill: url(#Degradado_sin_nombre_6);
+      }
+
+      .cls-4 {
+        fill: url(#Degradado_sin_nombre_4-2);
+      }
+
+      .cls-5 {
+        fill: url(#Degradado_sin_nombre_6-2);
+      }
+
+      .cls-6 {
+        fill: #ff4c00;
+      }
+    </style>
+    <linearGradient id="Degradado_sin_nombre_4" data-name="Degradado sin nombre 4" x1="-185.53" y1="49.72" x2="-152.53" y2="49.72" gradientTransform="translate(186.53 -32.22)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#00c3fc"/>
+      <stop offset="1" stop-color="#0557ed"/>
+    </linearGradient>
+    <linearGradient id="Degradado_sin_nombre_4-2" data-name="Degradado sin nombre 4" x1="-185.53" y1="99.22" x2="-152.53" y2="99.22" gradientTransform="translate(-116.53 -46.72) rotate(-180) scale(1 -1)" xlink:href="#Degradado_sin_nombre_4"/>
+    <linearGradient id="Degradado_sin_nombre_6" data-name="Degradado sin nombre 6" x1="287.11" y1="192.95" x2="320.11" y2="192.95" gradientTransform="translate(245.45 -286.11) rotate(90)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffb601"/>
+      <stop offset="1" stop-color="#ff054b"/>
+    </linearGradient>
+    <linearGradient id="Degradado_sin_nombre_6-2" data-name="Degradado sin nombre 6" x1="287.11" y1="242.45" x2="320.11" y2="242.45" gradientTransform="translate(259.95 356.11) rotate(-90) scale(1 -1)" xlink:href="#Degradado_sin_nombre_6"/>
+  </defs>
+  <rect class="cls-1" x="38.42" y="26.75" width="16.5" height="16.5" transform="translate(104.41 26.75) rotate(135)"/>
+  <rect class="cls-6" x="26.75" y="38.42" width="16.5" height="16.5" transform="translate(92.75 54.92) rotate(135)"/>
+  <rect class="cls-6" x="26.75" y="15.08" width="16.5" height="16.5" transform="translate(76.25 15.08) rotate(135)"/>
+  <rect class="cls-1" x="15.08" y="26.75" width="16.5" height="16.5" transform="translate(64.58 43.25) rotate(135)"/>
+  <rect class="cls-2" x="1" y="9.25" width="33" height="16.5" transform="translate(-7.25 17.5) rotate(-45)"/>
+  <rect class="cls-4" x="36" y="44.25" width="33" height="16.5" transform="translate(-21.75 52.5) rotate(-45)"/>
+  <rect class="cls-3" x="44.25" y="1" width="16.5" height="33" transform="translate(3 42.25) rotate(-45)"/>
+  <rect class="cls-5" x="9.25" y="36" width="16.5" height="33" transform="translate(-32 27.75) rotate(-45)"/>
+</svg>
