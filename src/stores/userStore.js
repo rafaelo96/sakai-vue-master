@@ -1,20 +1,28 @@
 import { defineStore } from 'pinia';
-
 export const useStore = defineStore('user', {
     state: () => ({
+        token: null,
         user: null,
-        isAuthenticated: false
+        isAuthenticated: false,
+        items: {}
     }),
     actions: {
-        login(user) {
-            this.user = user;
-            this.isAuthenticated = true;
+        setItem(key, value) {
+            if (key === 'token') {
+                this.token = value;
+                this.isAuthenticated = !!value;
+            } else if (key === 'user') {
+                this.user = value;
+            } else {
+                this.items[key] = value;
+            }
         },
-        logout() {
-            this.user = null;
-            this.isAuthenticated = false;
+        deleteItem(key) {
+            if (Object.prototype.hasOwnProperty.call(this.items, key)) {
+                delete this.items[key];
+            }
         },
-        async getData(url, type = 'GET', data = null) {
+        async send(url, type = 'GET', data = null) {
             try {
                 let response = null;
                 const method = type.toUpperCase();
@@ -24,13 +32,12 @@ export const useStore = defineStore('user', {
                         'Content-Type': 'application/json'
                     }
                 };
-                // Agrega el cuerpo de la petición si es POST o PUT
                 if (data && (method === 'POST' || method === 'PUT')) {
                     options.body = JSON.stringify(data);
                 }
                 response = await fetch(url, options);
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    return response.status;
                 }
                 return await response.json();
             } catch (error) {

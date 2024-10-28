@@ -1,12 +1,58 @@
 <script setup>
 import FloatingConfigurator from '@/components/FloatingConfigurator.vue';
+import { useStore } from '@/stores/userStore';
+import { useRouter } from 'vue-router';
 import { ref } from 'vue';
+import { useToast } from 'primevue/usetoast';
 
+const toast = useToast();
+const store = useStore();
+const router = useRouter();
 const email = ref('');
 const password = ref('');
-const checked = ref(false);
-</script>
+const showMessage = ref(false);
+const textMessage = ref(false);
 
+const validateFields = () => {
+    if (email.value.trim().length === 0 || password.value.trim().length === 0) {
+        textMessage.value = 'Porfavor ingrese todos los campos';
+        showMessage.value = true;
+        return false;
+    }
+    showMessage.value = false;
+    return true;
+};
+
+const login = async () => {
+    if (!validateFields()) return;
+
+    try {
+        const url = 'http://127.0.0.1:8000/api/login';
+        const response = await store.send(url, 'POST', {
+            email: email.value,
+            password: password.value
+        });
+
+        if (response.status === 200) {
+            store.setItem('token', response.token);
+            store.setItem('user', response.user);
+            showMessage.value = false;
+            await router.push('/dashboard');
+        } else {
+            showMessage.value = true;
+            textMessage.value = 'Usuario o contraseña incorrecto';
+        }
+    } catch (error) {
+        toast.add({
+            severity: 'error',
+            summary: 'se ha producido un error inesperado',
+            detail: 'Por favor, intente de nuevo. Si el problema continúa, contacte al soporte técnico.',
+            life: 3000
+        });
+        console.error('Login failed:', error);
+    }
+};
+</script>
 <template>
     <FloatingConfigurator />
     <div class="bg-surface-50 dark:bg-surface-950 flex items-center justify-center min-h-screen min-w-[100vw] overflow-hidden">
@@ -43,13 +89,10 @@ const checked = ref(false);
                         <Password id="password1" v-model="password" placeholder="Password" :toggleMask="true" class="mb-4" fluid :feedback="false"></Password>
 
                         <div class="flex items-center justify-between mt-2 mb-8 gap-8">
-                            <div class="flex items-center">
-                                <Checkbox v-model="checked" id="rememberme1" binary class="mr-2"></Checkbox>
-                                <label for="rememberme1">Remember me</label>
-                            </div>
                             <span class="font-medium no-underline ml-2 text-right cursor-pointer text-primary">Forgot password?</span>
+                            <Message v-if="showMessage" severity="error">{{ textMessage }}</Message>
                         </div>
-                        <Button label="Sign In" class="w-full" as="router-link" to="/"></Button>
+                        <Button label="Sign In" class="w-full" @click="login"></Button>
                     </div>
                 </div>
             </div>
