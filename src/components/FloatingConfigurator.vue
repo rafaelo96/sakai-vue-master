@@ -1,12 +1,17 @@
 <script setup>
 import AppConfigurator from '@/layout/AppConfigurator.vue';
 import { useLayout } from '@/layout/composables/layout';
-
+import { defineProps } from 'vue';
 const { toggleDarkMode, isDarkTheme } = useLayout();
+
+const props = defineProps({
+    showColors: Boolean
+});
+const showColors = props.showColors ?? true;
 </script>
 
 <template>
-    <div class="fixed flex gap-4 top-8 right-8">
+    <div class="fixed flex gap-4 top-8 right-8" v-if="showColors">
         <Button type="button" @click="toggleDarkMode" rounded :icon="isDarkTheme ? 'pi pi-moon' : 'pi pi-sun'" severity="secondary" />
         <div class="relative">
             <Button
@@ -15,7 +20,8 @@ const { toggleDarkMode, isDarkTheme } = useLayout();
                 type="button"
                 rounded
             />
-            <AppConfigurator />
+            <AppConfigurator/>
         </div>
     </div>
+    <Button v-else type="button"  @click="toggleDarkMode" rounded :icon="isDarkTheme ? 'pi pi-moon' : 'pi pi-sun'" severity="secondary" style="background: transparent;" class="border-sky-600"/>  
 </template>
