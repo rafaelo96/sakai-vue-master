@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia';
 export const useStore = defineStore('user', {
     state: () => ({
-        token: null,
-        user: null,
+        token: localStorage.getItem('token') || null,
+        user: JSON.parse(localStorage.getItem('user')) || null,
         isAuthenticated: false,
         items: {}
     }),
@@ -29,7 +29,8 @@ export const useStore = defineStore('user', {
                 const options = {
                     method,
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${this.token}`,
                     }
                 };
                 if (data && (method === 'POST' || method === 'PUT')) {
@@ -41,9 +42,15 @@ export const useStore = defineStore('user', {
                 }
                 return await response.json();
             } catch (error) {
-                console.error(error);
-                throw error;
+                return error;
             }
-        }
+        },
+        logout() {
+            this.send('http://127.0.0.1:8000/api/logout', 'POST', null)
+            this.setItem('token', null);
+            this.setItem('user', null);
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+        },
     }
 });
