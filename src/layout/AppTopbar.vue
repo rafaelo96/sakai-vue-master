@@ -1,8 +1,19 @@
 <script setup>
+import { ref } from 'vue';
 import { useLayout } from '@/layout/composables/layout';
 import AppConfigurator from './AppConfigurator.vue';
+import { useStore } from '@/stores/userStore';
+import { useRouter } from 'vue-router';
 
+const store = useStore();
+const router = useRouter();
 const { onMenuToggle, toggleDarkMode, isDarkTheme } = useLayout();
+
+const logout = ()=>{
+    console.log('logout')
+    store.logout()
+    router.push('/');
+}
 </script>
 
 <template>
@@ -51,11 +62,11 @@ const { onMenuToggle, toggleDarkMode, isDarkTheme } = useLayout();
                         <i class="pi pi-inbox"></i>
                         <span>Messages</span>
                     </button>
-                    <button type="button" class="layout-topbar-action">
-                        <i class="pi pi-user"></i>
+                    <button type="button" class="layout-topbar-action" @click="logout">
+                        <i class="pi pi-sign-out"></i>
                         <span>Profile</span>
                     </button>
-                </div>
+                   </div>
             </div>
         </div>
     </div>

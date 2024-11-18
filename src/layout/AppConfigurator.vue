@@ -183,6 +183,8 @@ function applyTheme(type, color) {
     }
 }
 
+applyTheme('primary', 'orange');
+
 function onPresetChange() {
     setPreset(preset.value);
     const presetValue = presets[preset.value];

@@ -10,7 +10,7 @@ const store = useStore();
 const products = ref(null);
 const chartData = ref(null);
 const chartOptions = ref(null);
-const router = useRouter();
+
 
 const items = ref([
     { label: 'Add New', icon: 'pi pi-fw pi-plus' },
@@ -102,11 +102,6 @@ watch([getPrimary, getSurface, isDarkTheme], () => {
     chartOptions.value = setChartOptions();
 });
 
-const logout = ()=>{
-    console.log('logout')
-    store.logout()
-    router.push('/');
-}
 </script>
 
 <template>
@@ -148,7 +143,7 @@ const logout = ()=>{
                         <span class="block text-muted-color font-medium mb-4">Customers</span>
                         <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">28441</div>
                     </div>
-                    <div @click="logout()" class="flex items-center justify-center bg-cyan-100 dark:bg-cyan-400/10 rounded-border" style="width: 2.5rem; height: 2.5rem">
+                    <div class="flex items-center justify-center bg-cyan-100 dark:bg-cyan-400/10 rounded-border" style="width: 2.5rem; height: 2.5rem">
                         <i class="pi pi-users text-cyan-500 !text-xl"></i>
                     </div>
                 </div>
