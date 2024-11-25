@@ -9,7 +9,7 @@
         "editor.formatOnSave": true
     },
     "[vue]": {
-        "editor.defaultFormatter": "Vue.volar",
+        "editor.defaultFormatter": "cweijan.vetur-plus",
         "editor.formatOnSave": true
     },
     "[typescript]": {

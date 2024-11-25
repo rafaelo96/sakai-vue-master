@@ -28,32 +28,34 @@ const validateFields = () => {
 };
 
 const login = async () => {
-    try {
-        const url = 'http://127.0.0.1:8000/api/login';
-        const response = await store.send(url, 'POST', {
-            email: email.value,
-            password: password.value
-        });
+    if(validateFields){
+        try {
+            const url = 'http://127.0.0.1:8000/api/login';
+            const response = await store.send(url, 'POST', {
+                email: email.value,
+                password: password.value
+            });
 
-        if (response.status === 200) {
-            store.setItem('token', response.token);
-            store.setItem('user', response.user);
-            localStorage.setItem('token', response.token);
-            localStorage.setItem('user', JSON.stringify(response.user));
-            showMessage.value = false;
-            await router.push('/dashboard');
-        } else {
-            showMessage.value = true;
-            textMessage.value = 'Usuario o contraseña incorrecto';
+            if (response.status === 200) {
+                store.setItem('token', response.token);
+                store.setItem('user', response.user);
+                localStorage.setItem('token', response.token);
+                localStorage.setItem('user', JSON.stringify(response.user));
+                showMessage.value = false;
+                await router.push('/dashboard');
+            } else {
+                showMessage.value = true;
+                textMessage.value = 'Usuario o contraseña incorrecto';
+            }
+        } catch (error) {
+            toast.add({
+                severity: 'error',
+                summary: 'se ha producido un error inesperado',
+                detail: 'Por favor, intente de nuevo. Si el problema continúa, contacte al soporte técnico.',
+                life: 3000
+            });
+            console.error('Login failed:', error);
         }
-    } catch (error) {
-        toast.add({
-            severity: 'error',
-            summary: 'se ha producido un error inesperado',
-            detail: 'Por favor, intente de nuevo. Si el problema continúa, contacte al soporte técnico.',
-            life: 3000
-        });
-        console.error('Login failed:', error);
     }
 };
 </script>
