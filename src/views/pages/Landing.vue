@@ -66,7 +66,7 @@ onUnmounted(() => {
                             </div>
 
                             <Button label="Login" text as="router-link" to="/auth/login" rounded></Button>
-                            <Button label="Register" to="/auth/login" rounded></Button>
+                            <Button label="Register" text as="router-link" to="/auth/register" rounded></Button>
                             <!-- Botón de menú en dispositivos móviles -->
                             <FloatingConfigurator :show-colors="false" />
                             <div class="md:hidden">

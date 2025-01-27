@@ -18,7 +18,7 @@ const email = ref('');
 const name = ref('');
 const password = ref('');
 const showMessage = ref(false);
-const textMessage = ref(''); // Cambiado a string vacío
+const textMessage = ref('');
 
 if (store.token) {
     router.push('/dashboard');
@@ -49,11 +49,13 @@ const submit = async () => {
                 'Accept': 'application/json',
             },
         });
-        if (response.status === 201) {
+        if (response.token) {
             store.setItem('token', response.token);
+            store.setItem('token_type', response.token_type);
             store.setItem('user', response.user);
 
             localStorage.setItem('token', response.token);
+            localStorage.setItem('token_type', response.token_type);
             localStorage.setItem('user', JSON.stringify(response.user));
 
             showMessage.value = false;
