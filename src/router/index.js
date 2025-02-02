@@ -7,15 +7,16 @@ const router = createRouter({
         {
             path: '/dashboard',
             component: AppLayout,
+            redirect: '/dashboard',
             children: [
                 {
-                    path: '/dashboard',
+                    path: '',
                     name: 'dashboard',
                     component: () => import('@/views/Dashboard.vue')
                 },
                 {
                     path: '/profile',
-                    name: 'dashboard',
+                    name: 'profile',
                     component: () => import('@/views/pages/Profile.vue')
                 },
             ]

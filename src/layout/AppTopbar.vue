@@ -13,6 +13,9 @@ const logout = () => {
     store.logout();
     router.push('/');
 };
+const profile = () => {
+    router.push('/profile')
+};
 
 const menu = ref();
 const items = ref([
@@ -21,7 +24,7 @@ const items = ref([
             {
                 label: 'Editar',
                 icon: 'pi pi-pencil',
-                command:  router.push('/profile'),
+                command: profile,
             },
             {
                 label: 'Salir',

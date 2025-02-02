@@ -2,8 +2,9 @@
 import FloatingConfigurator from '@/components/FloatingConfigurator.vue';
 import { useStore } from '@/stores/userStore';
 import { useToast } from 'primevue/usetoast';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { checkAuth } from "@/service/api"
 
 const toast = useToast();
 const store = useStore();
@@ -13,9 +14,19 @@ const password = ref('');
 const showMessage = ref(false);
 const textMessage = ref(false);
 
-if (store.token) {
-    router.push('/dashboard');
-}
+const isAuthenticated = ref(false);
+onMounted(async () => {
+  try {
+    const user = await checkAuth();
+    isAuthenticated.value = !!user;
+
+    if (isAuthenticated.value) {
+      router.push('/dashboard');
+    }
+  } catch (error) {
+    console.error('Error verificando autenticación:', error);
+  }
+});
 
 const validateFields = () => {
     if (email.value.trim().length === 0 || password.value.trim().length === 0) {
@@ -35,8 +46,7 @@ const login = async () => {
                 email: email.value,
                 password: password.value
             });
-
-            if (response.status === 200) {
+            if (response.token) {
                 store.setItem('token', response.token);
                 store.setItem('user', response.user);
                 localStorage.setItem('token', response.token);
@@ -58,6 +68,8 @@ const login = async () => {
         }
     }
 };
+
+
 </script>
 <template>
     <FloatingConfigurator />
