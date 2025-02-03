@@ -10,25 +10,29 @@ const api = axios.create({
 // Función para verificar si el token sigue siendo válido
 export const checkAuth = async () => {
   try {
-    const response = await api.get("/user", {
+    const response = await api.get("/checkAuth", {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     });
     return response.data;
   } catch (error) {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
     return null;
   }
 };
 
-export const logout=()=> {
+export const logout= async ()=> {
     api.post("/logout", null, {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     })
     .then(() => {
-      localStorage.removeItem("token");
-      this.$router.push("/login");
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      return true;
     })
     .catch(error => {
       console.error("Error en logout:", error);
+      return false;
     });
   }
   

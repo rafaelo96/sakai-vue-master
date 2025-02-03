@@ -45,12 +45,6 @@ export const useStore = defineStore('user', {
                 return error;
             }
         },
-        logout() {
-            this.send('http://127.0.0.1:8000/api/logout', 'POST', null)
-            this.setItem('token', null);
-            this.setItem('user', null);
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
-        },
+       
     }
 });

@@ -1,17 +1,19 @@
 <script setup>
 import { useLayout } from '@/layout/composables/layout';
 import { useStore } from '@/stores/userStore';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import AppConfigurator from './AppConfigurator.vue';
+import { logout } from "@/service/api"
+import { checkAuth } from "@/service/api"
 
-const store = useStore();
 const router = useRouter();
 const angle = ref(true);
+const isAuthenticated = ref(false);
 
-const logout = () => {
-    store.logout();
-    router.push('/');
+const out = async () => {
+    const log = await logout();
+    log ? router.push('/'):''
 };
 const profile = () => {
     router.push('/profile')
@@ -29,7 +31,7 @@ const items = ref([
             {
                 label: 'Salir',
                 icon: 'pi pi-sign-out',
-                command: logout,
+                command: out,
             }
         ]
     }
@@ -40,6 +42,17 @@ const toggle = (event) => {
     menu.value.toggle(event);
 };
 
+onMounted(async () => {
+    try {
+    const user = await checkAuth();
+    isAuthenticated.value = !!user;
+    if (!isAuthenticated.value) {
+    //   router.push('/');
+    }
+  } catch (error) {
+    console.error('Error verificando autenticación:', error);
+  }
+})
 </script>
 
 <template>

@@ -5,12 +5,13 @@ import { onMounted, ref, watch } from 'vue';
 import { useStore } from '@/stores/userStore';
 import { useRouter } from 'vue-router';
 
+
 const { getPrimary, getSurface, isDarkTheme } = useLayout();
 const store = useStore();
 const products = ref(null);
 const chartData = ref(null);
 const chartOptions = ref(null);
-
+const router = useRouter();
 
 const items = ref([
     { label: 'Add New', icon: 'pi pi-fw pi-plus' },
