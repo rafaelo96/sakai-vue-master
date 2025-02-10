@@ -1,5 +1,4 @@
 <script setup>
-import FloatingConfigurator from '@/components/FloatingConfigurator.vue';
 import { useStore } from '@/stores/userStore';
 import { useToast } from 'primevue/usetoast';
 import { ref } from 'vue';
@@ -16,6 +15,8 @@ const router = useRouter();
 
 const email = ref('');
 const name = ref('');
+const last_name = ref('');
+const second_last_name = ref('');
 const password = ref('');
 const showMessage = ref(false);
 const textMessage = ref('');
@@ -38,10 +39,12 @@ const submit = async () => {
     if (!validateFields()) return;
 
     try {
-        const url = 'http://127.0.0.1:8000/api/register';
+        const url = '/register';
         const response = await store.send(url, 'POST', {
             email: email.value,
             name: name.value,
+            last_name: last_name.value,
+            second_last_name: second_last_name.value,
             password: password.value,
             password_confirmation: password.value,
         }, {
@@ -56,7 +59,6 @@ const submit = async () => {
 
             localStorage.setItem('token', response.token);
             localStorage.setItem('token_type', response.token_type);
-            localStorage.setItem('user', JSON.stringify(response.user));
 
             showMessage.value = false;
             await router.push('/dashboard');
@@ -76,11 +78,10 @@ const submit = async () => {
 </script>
 
 <template>
-    <FloatingConfigurator />
     <div class="relative flex items-center justify-center min-h-screen min-w-[100vw] overflow-hidden">
         <!-- Círculos desenfocados -->
         <div class="absolute inset-0 -z-10 overflow-hidden">
-            <img src="/login.jpg" alt="Background Image" class="w-full h-full object-cover filter blur-xl" />
+            <img src="/login.jpg" alt="Background Image" class="w-full h-full object-cover filter blur-xl animate-zoom" />
         </div>
 
         <div class="flex flex-col items-center justify-center">
@@ -107,15 +108,38 @@ const submit = async () => {
                     />
 
                     <label for="name" class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2">
-                        Nombre completo
+                        Nombre
                     </label>
                     <InputText
                         id="name"
                         type="text"
-                        placeholder="Introduce tu nombre y apellidos"
+                        placeholder="Introduce tu nombre"
                         class="w-full md:w-[30rem] mb-8"
                         v-model="name"
                     />
+
+                    <label for="name" class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2">
+                        Apellido paterno
+                    </label>
+                    <InputText
+                        id="name"
+                        type="text"
+                        placeholder="Introduce tu primer apellido"
+                        class="w-full md:w-[30rem] mb-8"
+                        v-model="last_name"
+                    />
+
+                    <label for="name" class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2">
+                        Apellido materno
+                    </label>
+                    <InputText
+                        id="name"
+                        type="text"
+                        placeholder="Introduce segundo apellido"
+                        class="w-full md:w-[30rem] mb-8"
+                        v-model="second_last_name"
+                    />
+
 
                     <label for="password1" class="block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2">
                         Contraseña
@@ -149,4 +173,23 @@ const submit = async () => {
     transform: scale(1.6);
     margin-right: 1rem;
 }
+
+@keyframes zoom {
+    0% {
+        transform: scale(1) rotate(0deg);      /* Sin zoom ni rotación */
+    }
+    50% {
+        transform: scale(1.5) rotate(50deg);    /* Zoom leve y ligera rotación */
+    }
+    100% {
+        transform: scale(1) rotate(0deg);      /* Vuelve al estado original */
+    }
+}
+
+.animate-zoom {
+    animation: zoom 5s ease-in-out infinite; /* Animación infinita y suave */
+    transition: transform 0.5s ease-in-out;
+}
+
+
 </style>

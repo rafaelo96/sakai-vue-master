@@ -1,22 +1,23 @@
 <script setup>
-import { useLayout } from '@/layout/composables/layout';
 import { useStore } from '@/stores/userStore';
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import AppConfigurator from './AppConfigurator.vue';
-import { logout } from "@/service/api"
-import { checkAuth } from "@/service/api"
 
+const store = useStore();
 const router = useRouter();
 const angle = ref(true);
 const isAuthenticated = ref(false);
 
 const out = async () => {
-    const log = await logout();
-    log ? router.push('/'):''
+    const log = await store.logout();  // Usamos la acción del store para hacer logout
+    if (log) {
+        router.push('/');
+    }
 };
+
 const profile = () => {
-    router.push('/profile')
+    router.push('/profile');
 };
 
 const menu = ref();
@@ -38,22 +39,28 @@ const items = ref([
 ]);
 
 const toggle = (event) => {
-    angle.value = !angle.value
+    angle.value = !angle.value;
     menu.value.toggle(event);
 };
 
 onMounted(async () => {
     try {
-    const user = await checkAuth();
-    isAuthenticated.value = !!user;
-    if (!isAuthenticated.value) {
-    //   router.push('/');
+        const response = await store.checkAuth();
+        isAuthenticated.value = !!response;
+        if (isAuthenticated.value) {
+            store.setItem('user', JSON.stringify(response.user));
+            this.setItem('token', null);
+            this.setItem('user', null);
+        }
+        else{
+            router.push('/');
+        }
+    } catch (error) {
+        console.error('Error verificando autenticación:', error);
     }
-  } catch (error) {
-    console.error('Error verificando autenticación:', error);
-  }
-})
+});
 </script>
+
 
 <template>
     <div class="layout-topbar">
@@ -101,13 +108,13 @@ onMounted(async () => {
                     <button v-ripple @click="toggle"
                         class="relative overflow-hidden w-full border-0 bg-transparent flex items-center justify-between p-2 pl-4 hover:bg-surface-100 dark:hover:bg-surface-800 rounded cursor-pointer transition-colors duration-200">
                         <!-- Avatar -->
-                        <Avatar image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png" class="mr-3"
+                        <Avatar :image="store.user.avatar" class="mr-3"
                             shape="circle" />
 
                         <!-- Información del usuario -->
                         <div class="flex flex-col items-start flex-grow">
-                            <span class="font-bold leading-tight">Amy Elsner</span>
-                            <span class="text-sm text-gray-500 dark:text-gray-400">Admin</span>
+                            <span class="font-bold leading-tight">{{ store.user.name }}</span>
+                            <span class="text-sm text-gray-500 dark:text-gray-400">{{ store.user.role }}</span>
                         </div>
 
                         <!-- Ícono -->

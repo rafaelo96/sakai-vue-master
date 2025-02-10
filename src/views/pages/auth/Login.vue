@@ -4,7 +4,6 @@ import { useStore } from '@/stores/userStore';
 import { useToast } from 'primevue/usetoast';
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { checkAuth } from "@/service/api"
 
 const toast = useToast();
 const store = useStore();
@@ -15,9 +14,11 @@ const showMessage = ref(false);
 const textMessage = ref(false);
 
 const isAuthenticated = ref(false);
+
+// Verificación de autenticación al montar el componente
 onMounted(async () => {
   try {
-    const user = await checkAuth();
+    const user = await store.checkAuth();  // Usamos la acción checkAuth del store
     isAuthenticated.value = !!user;
 
     if (isAuthenticated.value) {
@@ -28,6 +29,7 @@ onMounted(async () => {
   }
 });
 
+// Validar los campos del formulario
 const validateFields = () => {
     if (email.value.trim().length === 0 || password.value.trim().length === 0) {
         textMessage.value = 'Porfavor ingrese todos los campos';
@@ -38,14 +40,15 @@ const validateFields = () => {
     return true;
 };
 
+// Función de login utilizando el store
 const login = async () => {
-    if(validateFields){
+    if(validateFields()){
         try {
-            const url = 'http://127.0.0.1:8000/api/login';
-            const response = await store.send(url, 'POST', {
+            const response = await store.send('login', 'POST', {
                 email: email.value,
                 password: password.value
-            });
+            });  // Usamos el método send del store
+
             if (response.token) {
                 store.setItem('token', response.token);
                 store.setItem('user', response.user);
@@ -60,7 +63,7 @@ const login = async () => {
         } catch (error) {
             toast.add({
                 severity: 'error',
-                summary: 'se ha producido un error inesperado',
+                summary: 'Se ha producido un error inesperado',
                 detail: 'Por favor, intente de nuevo. Si el problema continúa, contacte al soporte técnico.',
                 life: 3000
             });
@@ -68,8 +71,6 @@ const login = async () => {
         }
     }
 };
-
-
 </script>
 <template>
     <FloatingConfigurator />
